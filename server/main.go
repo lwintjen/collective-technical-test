@@ -32,12 +32,6 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Group(func(r chi.Router) {
-		r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("Ok"))
-		})
-	})
-	r.Group(func(r chi.Router) {
 		secureMiddleware := secure.New(secure.Options{
 			FrameDeny:   true,
 			SSLRedirect: false,
