@@ -14,6 +14,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"github.com/patrickmn/go-cache"
 	"github.com/rs/zerolog"
 	logger "github.com/rs/zerolog/log"
 	"github.com/unrolled/secure"
@@ -21,6 +22,10 @@ import (
 
 func main() {
 	configuration := config.InitConfig()
+
+	// Create a cache with a default expiration time of 5 minutes, and which
+	// purges expired items every 10 minutes
+	cache := cache.New(5*time.Minute, 10*time.Minute)
 
 	// UNIX Time is faster and smaller than most timestamps
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
@@ -32,7 +37,7 @@ func main() {
 		logger.Panic().Err(err).Msg("sentry initialization failed")
 	}
 
-	go services.StartPolling(configuration)
+	go services.StartPolling(*cache, configuration)
 
 	r := chi.NewRouter()
 	r.Group(func(r chi.Router) {

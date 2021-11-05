@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/patrickmn/go-cache"
 	logger "github.com/rs/zerolog/log"
 )
 
@@ -29,19 +30,19 @@ type CoinCapURIResponse struct {
 	Data []CoinCapURIResponseFields
 }
 
-func StartPolling(config config.Config) {
+func StartPolling(c cache.Cache, config config.Config) {
 	for {
-		go FetchTopRankedCrypto(config.CoinCapURI + "assets?limit=150")
+		FetchTopRankedCrypto(c, config.CoinCapURI+"assets?limit=150")
 		<-time.After(10 * time.Second)
 	}
 }
 
-func FetchTopRankedCrypto(coinCapURI string) (CoinCapURIResponse, error) {
+func FetchTopRankedCrypto(c cache.Cache, coinCapURI string) {
 	var responseJSON CoinCapURIResponse
 	res, err := http.Get(coinCapURI)
 	if err != nil {
 		logger.Error().Msg("An error occured in FetchTopRankedCrypto")
-		return responseJSON, err
+		return
 	}
 
 	defer res.Body.Close()
@@ -49,7 +50,7 @@ func FetchTopRankedCrypto(coinCapURI string) (CoinCapURIResponse, error) {
 	if err != nil {
 		logger.Error().Msg(err.Error())
 		logger.Error().Msg("An error occured in FetchTopRankedCrypto")
-		return responseJSON, err
+		return
 	}
-	return responseJSON, err
+	c.Set("TopCryptos", &responseJSON, cache.DefaultExpiration)
 }
