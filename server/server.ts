@@ -1,5 +1,4 @@
 import express from "express";
-import { ParsedQs } from "qs";
 import { initConfig } from "./config/config";
 import { startPolling } from "./services/services";
 const NodeCache = require("node-cache");
