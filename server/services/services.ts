@@ -20,7 +20,7 @@ export function startPolling(cache: any, config: Config): void {
     fetchTopRankedCrypto(cache, config.coinCapURI + "assets?limit=150");
 };
 
-async function fetchTopRankedCrypto(cache: any, coinCapURI: string) {
+export async function fetchTopRankedCrypto(cache: any, coinCapURI: string) {
     try {
         const res = await axios.get(coinCapURI);
         if (res.data?.data)

@@ -1,8 +1,15 @@
 import express from "express";
 import { initConfig } from "./config/config";
-import { startPolling } from "./services/services";
+import { startPolling, fetchTopRankedCrypto } from "./services/services";
 const NodeCache = require("node-cache");
 const app = express();
+
+
+// //parse application/json and look for raw text
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.text());
+// app.use(bodyParser.json({ type: 'application/json' }));
 
 const cfg = initConfig();
 
@@ -11,13 +18,18 @@ const cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 // fetch crypto-currencies every 10s
 setInterval(startPolling, 10000, cache, cfg);
 
-app.get("/fetch-cryptos", (req, res) => {
-    const cachedCryptos = cache.get("cryptoCurrencies");
+app.get("/api/fetch-cryptos", async (req, res) => {
+    let cachedCryptos = cache.get("cryptoCurrencies");
+    if (!cachedCryptos) {
+        await fetchTopRankedCrypto(cache, cfg.coinCapURI + "assets?limit=150");
+        cachedCryptos = cache.get("cryptoCurrencies");
+        console.log(cachedCryptos);
+    }
     // send a 200 even if there isn't anything in cache, we send an empty object 
     res.send(cachedCryptos);
 });
 
-app.get("/search", (req, res) => {
+app.get("/api/search", (req, res) => {
     const cachedCryptos = cache.get("cryptoCurrencies");
     const filters = req.query;
     let filteredCryptos;
