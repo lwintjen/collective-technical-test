@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"collective-technical-test/server/config"
+	"collective-technical-test/server/routes"
+	"collective-technical-test/server/services"
 
 	"github.com/getsentry/sentry-go"
 
@@ -29,6 +31,8 @@ func main() {
 	if err != nil {
 		logger.Panic().Err(err).Msg("sentry initialization failed")
 	}
+
+	go services.StartPolling(configuration)
 
 	r := chi.NewRouter()
 	r.Group(func(r chi.Router) {
@@ -59,9 +63,9 @@ func main() {
 			boom.NotFound(w, "Method not allowed.")
 		})
 
-		r.Route("/test", func(r chi.Router) {
+		r.Route("/fetch-cryptos", func(r chi.Router) {
 			r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-				logger.Info().Msg("Testing server cfg")
+				routes.FetchTopRankedCrypto(w, r, configuration)
 			})
 		})
 
