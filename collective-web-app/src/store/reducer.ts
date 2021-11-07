@@ -1,7 +1,7 @@
 import * as actionTypes from "./actionTypes";
 
 const initialState: CoinState | [] = {
-    coins: []
+    likedCoins: []
 };
 
 const reducer = (
@@ -10,8 +10,10 @@ const reducer = (
 ): CoinState => {
     switch (action.type) {
         case actionTypes.FETCH_COINS:
-            console.log(action.coins[0]);
-            return { ...state, coins: action.coins };
+            console.log(action.likedCoin);
+            if (state.likedCoins.findIndex(a => a === action.likedCoin) === -1)
+                return { ...state, likedCoins: [action.likedCoin, ...state.likedCoins] };
+            return { ...state, likedCoins: state.likedCoins.filter(coin => coin !== action.likedCoin) };
     }
     return state;
 };

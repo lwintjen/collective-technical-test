@@ -1,12 +1,16 @@
-import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import SearchBar from './SearchBar';
+import { CoinCapURIResponse } from '../types/currency';
 
-const Header = (props) => {
-    const { coins, setCoins } = props;
+interface Props {
+    setCoins: (coins: CoinCapURIResponse[]) => void;
+}
+
+const Header: React.FC<Props> = (props) => {
+    const { setCoins } = props;
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{ backgroundColor: 'none' }}>
@@ -19,30 +23,11 @@ const Header = (props) => {
                     >
                         CoinsFinder
                     </Typography>
-                    <SearchBar coins={coins} setCoins={setCoins} />
+                    <SearchBar setCoins={setCoins} />
                 </Toolbar>
             </AppBar>
         </Box>
     );
-};
-
-Header.propTypes = {
-    setCoins: PropTypes.func.isRequired,
-    coins: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string,
-        rank: PropTypes.string,
-        symbol: PropTypes.string,
-        name: PropTypes.string,
-        supply: PropTypes.string,
-        maxSupply: PropTypes.string,
-        marketCapUsd: PropTypes.string,
-        volumeUsd24Hr: PropTypes.string,
-        priceUsd: PropTypes.string,
-        changePercent24Hr: PropTypes.string,
-        vwap24Hr: PropTypes.string,
-        explorer: PropTypes.string,
-        liked: PropTypes.bool,
-    })).isRequired
 };
 
 export default Header;

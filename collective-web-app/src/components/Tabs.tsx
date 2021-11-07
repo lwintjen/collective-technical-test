@@ -1,12 +1,16 @@
 import { useState, SyntheticEvent } from 'react';
-import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import CoinsList from './CoinsList';
 import { TabPanelProps } from '../types/tabpanel';
+import { CoinCapURIResponse } from '../types/currency';
 
+interface Props {
+    coins: CoinCapURIResponse[];
+    setCoins: (coins: CoinCapURIResponse[]) => void;
+}
 
 const TabPanel = (props: TabPanelProps) => {
     const { children, value, index, ...other } = props;
@@ -21,7 +25,7 @@ const TabPanel = (props: TabPanelProps) => {
         >
             {value === index && (
                 <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
+                    <Typography component={'span'}>{children}</Typography>
                 </Box>
             )}
         </div>
@@ -35,7 +39,7 @@ const a11yProps = (index: number) => {
     };
 };
 
-const CoinsTabs = (props) => {
+const CoinsTabs: React.FC<Props> = (props) => {
     const { coins, setCoins } = props;
     const [value, setValue] = useState(0);
 
@@ -59,25 +63,6 @@ const CoinsTabs = (props) => {
             </TabPanel>
         </Box>
     );
-};
-
-CoinsTabs.propTypes = {
-    setCoins: PropTypes.func.isRequired,
-    coins: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string,
-        rank: PropTypes.string,
-        symbol: PropTypes.string,
-        name: PropTypes.string,
-        supply: PropTypes.string,
-        maxSupply: PropTypes.string,
-        marketCapUsd: PropTypes.string,
-        volumeUsd24Hr: PropTypes.string,
-        priceUsd: PropTypes.string,
-        changePercent24Hr: PropTypes.string,
-        vwap24Hr: PropTypes.string,
-        explorer: PropTypes.string,
-
-    })).isRequired
 };
 
 export default CoinsTabs;

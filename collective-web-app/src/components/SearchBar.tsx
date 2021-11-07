@@ -1,10 +1,15 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useQuery } from 'react-query';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { currencyApi } from '../api/currencyApi';
+import store from '../store';
+import { CoinCapURIResponse } from '../types/currency';
+
+interface Props {
+    setCoins: (coins: CoinCapURIResponse[]) => void;
+}
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -41,9 +46,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const SearchBar = (props) => {
+const SearchBar: React.FC<Props> = (props) => {
     const [searchValue, setSearchValue] = useState<string>("");
-    const { coins, setCoins } = props;
+    const { setCoins } = props;
 
     const { refetch } = useQuery('search-currencies', async () =>
         await currencyApi.searchCurrencies(searchValue)
@@ -52,10 +57,8 @@ const SearchBar = (props) => {
             enabled: false, // turned off by default, manual refetch is needed
             onSuccess: (data) => {
                 const res = data.map(newCoin => {
-                    const oldCoin = coins.find(c => c.name === newCoin.name);
-                    if (oldCoin)
-                        return { liked: oldCoin.liked, ...newCoin };
-                    return { liked: false, ...newCoin };
+                    const likedCoins = store.getState().likedCoins;
+                    return { liked: likedCoins.findIndex(coinID => coinID === newCoin.id) > 0, ...newCoin };
                 });
                 setCoins(res);
             }
@@ -69,12 +72,9 @@ const SearchBar = (props) => {
         }
         const data = await currencyApi.fetchCurrencies();
         const res = data.map(newCoin => {
-            const oldCoin = coins.find(c => c.name === newCoin.name);
-            if (oldCoin)
-                return { liked: oldCoin.liked, ...newCoin };
-            return { liked: false, ...newCoin };
+            const likedCoins = store.getState().likedCoins;
+            return { liked: likedCoins.findIndex(coinID => coinID === newCoin.id) > 0, ...newCoin };
         });
-
         setCoins(res);
     };
 
@@ -89,25 +89,6 @@ const SearchBar = (props) => {
             onChange={handleChange}
         />
     </Search>);
-};
-
-SearchBar.propTypes = {
-    setCoins: PropTypes.func.isRequired,
-    coins: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string,
-        rank: PropTypes.string,
-        symbol: PropTypes.string,
-        name: PropTypes.string,
-        supply: PropTypes.string,
-        maxSupply: PropTypes.string,
-        marketCapUsd: PropTypes.string,
-        volumeUsd24Hr: PropTypes.string,
-        priceUsd: PropTypes.string,
-        changePercent24Hr: PropTypes.string,
-        vwap24Hr: PropTypes.string,
-        explorer: PropTypes.string,
-        liked: PropTypes.bool,
-    })).isRequired
 };
 
 export default SearchBar;
