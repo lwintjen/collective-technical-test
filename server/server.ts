@@ -18,6 +18,10 @@ const cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 // fetch crypto-currencies every 10s
 setInterval(startPolling, 10000, cache, cfg);
 
+app.get('/', (req, res) => {
+    res.send('Welcome to the server dedicated to Collective technical test web-app');
+});
+
 app.get("/api/fetch-cryptos", async (req, res) => {
     let cachedCryptos = cache.get("cryptoCurrencies");
     if (!cachedCryptos) {
