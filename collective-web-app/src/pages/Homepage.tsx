@@ -3,7 +3,7 @@ import { currencyApi } from '../api/currencyApi';
 import LoadingScreen from '../components/LoadingScreen';
 import { Box } from '@mui/material';
 import Header from '../components/Header';
-import CoinsList from '../components/CoinsList';
+import Tabs from '../components/Tabs';
 
 const Homepage = () => {
     const { data } = useQuery('currencies', currencyApi.fetchCurrencies, {
@@ -14,7 +14,7 @@ const Homepage = () => {
     return (data ?
         <Box sx={{ flexGrow: 1 }}>
             <Header />
-            <CoinsList coins={data} />
+            <Tabs coins={data} />
         </Box>
         : <LoadingScreen />);
 };

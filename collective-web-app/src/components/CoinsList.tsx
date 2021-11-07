@@ -13,8 +13,8 @@ const CoinsList = ({ coins }) => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell align="right">Rank</TableCell>
+                        <TableCell>Rank</TableCell>
+                        <TableCell align="right">Name</TableCell>
                         <TableCell align="right">Symbol</TableCell>
                         <TableCell align="right">Change on the last 24hrs</TableCell>
                         <TableCell align="right">Price</TableCell>
@@ -23,13 +23,13 @@ const CoinsList = ({ coins }) => {
                 <TableBody>
                     {coins.map((row) => (
                         <TableRow
-                            key={row.name}
+                            key={row.rank}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
-                                {row.name}
+                                {row.rank}
                             </TableCell>
-                            <TableCell align="right">{row.rank}</TableCell>
+                            <TableCell align="right">{row.name}</TableCell>
                             <TableCell align="right">{row.symbol}</TableCell>
                             <TableCell align="right" sx={{ color: row.changePercent24Hr[0] === '-' ? 'red' : 'green' }}>{row.changePercent24Hr}%</TableCell>
                             <TableCell align="right">${Number(row.priceUsd).toFixed(2)}</TableCell>
