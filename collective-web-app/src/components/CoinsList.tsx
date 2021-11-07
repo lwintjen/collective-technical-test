@@ -32,7 +32,7 @@ const CoinsList = ({ coins }) => {
                             <TableCell align="right">{row.rank}</TableCell>
                             <TableCell align="right">{row.symbol}</TableCell>
                             <TableCell align="right" sx={{ color: row.changePercent24Hr[0] === '-' ? 'red' : 'green' }}>{row.changePercent24Hr}%</TableCell>
-                            <TableCell align="right">{row.priceUsd}</TableCell>
+                            <TableCell align="right">${Number(row.priceUsd).toFixed(2)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
