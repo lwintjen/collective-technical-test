@@ -7,7 +7,6 @@
     "dev": "nodemon server.ts",
     "test": "mocha",
     "start": "node build/server.js",
-    "deploy": "git add . && git commit -m Heroku && git push heroku master",
     "build": "tsc -p ."
   },
   "keywords": [],
