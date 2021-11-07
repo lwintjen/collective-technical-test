@@ -63,4 +63,4 @@ Obviously, this is still a pretty simple application and there are tons of way t
 - there is still a way to improve the readability and maintanability of this code by re-structuring the code and using TS at its full potential (i.e. I think it's far from perfect)
 - ...
 
-Overall, I would say that this is a working product but it could still be improved in terms of features as well as code (reducing the lines of code per file for each component by splitting the styling from the logic into 2 separate files, switching from one tab to another is quite slow and could be improved, removing hardcoded arrays to map and re-structure the code a bit).
+Overall, I would say that this is a working product but it could still be improved in terms of features as well as code (reducing the lines of code per file for each component by splitting the styling from the logic into 2 separate files, switching from one tab to another is quite slow and could be improved, removing hardcoded arrays to map and re-structure the code a bit, naming).
