@@ -9,8 +9,6 @@ const darkTheme = createTheme({
   },
 });
 
-console.log(darkTheme);
-
 const App = () => {
   const content = useRoutes(routes);
 

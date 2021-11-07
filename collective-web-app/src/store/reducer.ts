@@ -10,7 +10,6 @@ const reducer = (
 ): CoinState => {
     switch (action.type) {
         case actionTypes.FETCH_COINS:
-            console.log(action.likedCoin);
             if (state.likedCoins.findIndex(a => a === action.likedCoin) === -1)
                 return { ...state, likedCoins: [action.likedCoin, ...state.likedCoins] };
             return { ...state, likedCoins: state.likedCoins.filter(coin => coin !== action.likedCoin) };

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useQuery } from 'react-query';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -50,24 +49,19 @@ const SearchBar: React.FC<Props> = (props) => {
     const [searchValue, setSearchValue] = useState<string>("");
     const { setCoins } = props;
 
-    const { refetch } = useQuery('search-currencies', async () =>
-        await currencyApi.searchCurrencies(searchValue)
-        , {
-            refetchOnWindowFocus: false,
-            enabled: false, // turned off by default, manual refetch is needed
-            onSuccess: (data) => {
-                const res = data.map(newCoin => {
-                    const likedCoins = store.getState().likedCoins;
-                    return { liked: likedCoins.findIndex(coinID => coinID === newCoin.id) > 0, ...newCoin };
-                });
-                setCoins(res);
-            }
+    const refetch = async () => {
+        const data = await currencyApi.searchCurrencies(searchValue);
+        const res = data.map(newCoin => {
+            const likedCoins = store.getState().likedCoins;
+            return { liked: likedCoins.findIndex(coinID => coinID === newCoin.id) > 0, ...newCoin };
         });
+        setCoins(res);
+    };
 
     const handleChange = async (e) => {
         setSearchValue(e.target.value);
         if (e.target.value !== "") {
-            refetch();
+            await refetch();
             return;
         }
         const data = await currencyApi.fetchCurrencies();
