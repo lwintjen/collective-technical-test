@@ -41,7 +41,8 @@ app.get("/api/search", (req, res) => {
         filteredCryptos = cachedCryptos.filter(crypto => {
             let isValid = true;
             for (const key in req.query) {
-                isValid = isValid && crypto[key].toLowerCase() === filters[key]?.toString().toLowerCase();
+                console.log(crypto[key]);
+                isValid = isValid && crypto[key].toLowerCase().includes(filters[key]?.toString().toLowerCase());
             };
             return isValid;
         });
