@@ -6,10 +6,10 @@ import { DataGrid, GridRowsProp, GridColDef, GridCellParams } from '@mui/x-data-
 import { CoinCapURIResponse } from 'src/types/currency';
 
 const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'id', headerName: 'Id', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'name', headerName: 'Name', width: 150, sortable: false },
+    { field: 'id', headerName: 'Id', width: 150, align: 'center', headerAlign: 'center', sortable: false },
     { field: 'rank', headerName: 'Rank', width: 200, align: 'center', headerAlign: 'center' },
-    { field: 'symbol', headerName: 'Symbol', width: 200, align: 'center', headerAlign: 'center' },
+    { field: 'symbol', headerName: 'Symbol', width: 200, align: 'center', headerAlign: 'center', sortable: false },
     {
         field: 'changePercent24Hr', headerName: 'Rate (last 24hrs)', width: 200, align: 'center', headerAlign: 'center', cellClassName: (params: GridCellParams<string>) =>
             clsx('super-app', {
@@ -17,7 +17,7 @@ const columns: GridColDef[] = [
                 positive: params.value[0] === '-',
             }),
     },
-    { field: 'priceUsd', headerName: 'Price', width: 200, align: 'center', headerAlign: 'center' },
+    { field: 'priceUsd', headerName: 'Price ($)', width: 200, align: 'center', headerAlign: 'center' },
     { field: 'supply', headerName: 'Supply', width: 200, align: 'center', headerAlign: 'center', disableColumnMenu: true, sortable: false },
 ];
 
@@ -44,7 +44,7 @@ const formatRows = (coins: CoinCapURIResponse[]): GridRowsProp => {
             "rank": Number(c.rank),
             "symbol": c.symbol,
             "changePercent24Hr": formatNumber(c.changePercent24Hr),
-            "priceUsd": '$' + Number(c.priceUsd).toFixed(2),
+            "priceUsd": Number(c.priceUsd).toFixed(2),
             "supply": Number(c.supply).toFixed(2),
         };
     });

@@ -11,8 +11,8 @@ class CurrencyApi {
         return Promise.resolve(res.data);
     }
 
-    async searchCurrencies(filters: string): Promise<CoinCapURIResponse[]> {
-        const res = await axios.get(`${baseApiUri}/search?${filters}`);
+    async searchCurrencies(filter: string): Promise<CoinCapURIResponse[]> {
+        const res = await axios.get(`${baseApiUri}/search?name=${filter}`);
 
         return Promise.resolve(res.data);
     }

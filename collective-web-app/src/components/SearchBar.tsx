@@ -46,21 +46,25 @@ const SearchBar = (props) => {
     const [searchValue, setSearchValue] = useState<string>("");
     const { setCoins } = props;
 
-    const { refetch } = useQuery('search-currencies', async () => {
-        const d = await currencyApi.searchCurrencies(searchValue);
-        return d;
-    }, {
-        refetchOnWindowFocus: false,
-        enabled: false, // turned off by default, manual refetch is needed
-        onSuccess: (data) => {
-            setCoins(data);
-        }
-    });
+    const { refetch } = useQuery('search-currencies', async () =>
+        await currencyApi.searchCurrencies(searchValue)
+        , {
+            refetchOnWindowFocus: false,
+            enabled: false, // turned off by default, manual refetch is needed
+            onSuccess: (data) => {
+                setCoins(data);
+            }
+        });
 
-    const handleChange = (e) => {
+    const handleChange = async (e) => {
         setSearchValue(e.target.value);
         console.log(e.target.value);
-        refetch();
+        if (e.target.value !== "") {
+            refetch();
+            return;
+        }
+        const coins = await currencyApi.fetchCurrencies();
+        setCoins(coins);
     };
 
     return (<Search>
