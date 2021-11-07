@@ -49,4 +49,4 @@ app.get("/api/search", (req, res) => {
     res.send(filteredCryptos);
 });
 
-app.listen(cfg.port, () => console.log(`⚡Server is running here 👉 https://localhost:${cfg.port}`));
+app.listen(process.env.PORT || cfg.port, () => console.log(`⚡Server is running here 👉 https://localhost:${process.env.PORT || cfg.port}`));
