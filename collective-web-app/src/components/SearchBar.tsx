@@ -5,7 +5,6 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { currencyApi } from '../api/currencyApi';
-import { CoinCapURIResponse } from 'src/types/currency';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -44,7 +43,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const SearchBar = (props) => {
     const [searchValue, setSearchValue] = useState<string>("");
-    const { setCoins } = props;
+    const { coins, setCoins } = props;
 
     const { refetch } = useQuery('search-currencies', async () =>
         await currencyApi.searchCurrencies(searchValue)
@@ -52,19 +51,31 @@ const SearchBar = (props) => {
             refetchOnWindowFocus: false,
             enabled: false, // turned off by default, manual refetch is needed
             onSuccess: (data) => {
-                setCoins(data);
+                const res = data.map(newCoin => {
+                    const oldCoin = coins.find(c => c.name === newCoin.name);
+                    if (oldCoin)
+                        return { liked: oldCoin.liked, ...newCoin };
+                    return { liked: false, ...newCoin };
+                });
+                setCoins(res);
             }
         });
 
     const handleChange = async (e) => {
         setSearchValue(e.target.value);
-        console.log(e.target.value);
         if (e.target.value !== "") {
             refetch();
             return;
         }
-        const coins = await currencyApi.fetchCurrencies();
-        setCoins(coins);
+        const data = await currencyApi.fetchCurrencies();
+        const res = data.map(newCoin => {
+            const oldCoin = coins.find(c => c.name === newCoin.name);
+            if (oldCoin)
+                return { liked: oldCoin.liked, ...newCoin };
+            return { liked: false, ...newCoin };
+        });
+
+        setCoins(res);
     };
 
     return (<Search>
@@ -81,7 +92,22 @@ const SearchBar = (props) => {
 };
 
 SearchBar.propTypes = {
-    setCoins: PropTypes.func.isRequired
+    setCoins: PropTypes.func.isRequired,
+    coins: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        rank: PropTypes.string,
+        symbol: PropTypes.string,
+        name: PropTypes.string,
+        supply: PropTypes.string,
+        maxSupply: PropTypes.string,
+        marketCapUsd: PropTypes.string,
+        volumeUsd24Hr: PropTypes.string,
+        priceUsd: PropTypes.string,
+        changePercent24Hr: PropTypes.string,
+        vwap24Hr: PropTypes.string,
+        explorer: PropTypes.string,
+        liked: PropTypes.bool,
+    })).isRequired
 };
 
 export default SearchBar;

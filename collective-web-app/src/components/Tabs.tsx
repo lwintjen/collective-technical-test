@@ -36,7 +36,7 @@ const a11yProps = (index: number) => {
 };
 
 const CoinsTabs = (props) => {
-    const { coins } = props;
+    const { coins, setCoins } = props;
     const [value, setValue] = useState(0);
 
     const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -52,16 +52,17 @@ const CoinsTabs = (props) => {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <CoinsList coins={coins} />
+                <CoinsList coins={coins} displayAllItems={true} setCoins={setCoins} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
+                <CoinsList coins={coins} displayAllItems={false} setCoins={setCoins} />
             </TabPanel>
         </Box>
     );
 };
 
 CoinsTabs.propTypes = {
+    setCoins: PropTypes.func.isRequired,
     coins: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string,
         rank: PropTypes.string,
@@ -78,6 +79,5 @@ CoinsTabs.propTypes = {
 
     })).isRequired
 };
-
 
 export default CoinsTabs;
