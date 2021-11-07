@@ -1,10 +1,10 @@
 type CoinState = {
-    likedCoins: string[];
+  likedCoins: string[];
 };
 
 type CoinAction = {
-    type: string;
-    likedCoin: string;
+  type: string;
+  likedCoin: string;
 };
 
 type DispatchType = (args: CoinAction) => CoinAction;
