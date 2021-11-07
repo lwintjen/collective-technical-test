@@ -1,4 +1,5 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
 import { useRoutes } from 'react-router-dom';
 import routes from './router/routes';
 
@@ -15,6 +16,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
       {content}
     </ThemeProvider>
   );
