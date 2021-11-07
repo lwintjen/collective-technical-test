@@ -17,7 +17,7 @@ const Header = (props) => {
                         component="div"
                         sx={{ display: { sm: 'block' } }}
                     >
-                        MyCoins
+                        CoinsFinder
                     </Typography>
                     <SearchBar setCoins={setCoins} />
                 </Toolbar>
