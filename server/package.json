@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon server.ts",
+    "dev": "nodemon server.ts",
     "test": "mocha",
-    "start": "nodemon server.ts"
+    "start": "node build/server.js",
+    "deploy": "git add . && git commit -m Heroku && git push heroku master",
+    "build": "tsc -p ."
   },
   "keywords": [],
   "author": "Loris Wintjens",
