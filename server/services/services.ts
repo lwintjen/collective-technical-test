@@ -1,5 +1,5 @@
 import { Config } from '../config/config';
-const axios = require('axios');
+import axios from 'axios';
 
 interface CoinCapURIResponse {
     id: string;

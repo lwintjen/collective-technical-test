@@ -1,7 +1,7 @@
 import express from "express";
 import { initConfig } from "./config/config";
 import { startPolling, fetchTopRankedCrypto } from "./services/services";
-const NodeCache = require("node-cache");
+const NodeCache = require('node-cache');
 const app = express();
 
 
