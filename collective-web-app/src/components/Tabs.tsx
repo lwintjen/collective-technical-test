@@ -15,8 +15,8 @@ const TabPanel = (props: TabPanelProps) => {
         <div
             role="tabpanel"
             hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
+            id={`tabpanel-${index}`}
+            aria-labelledby={`tab-${index}`}
             {...other}
         >
             {value === index && (
@@ -30,12 +30,13 @@ const TabPanel = (props: TabPanelProps) => {
 
 const a11yProps = (index: number) => {
     return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
+        id: `tab-${index}`,
+        'aria-controls': `tabpanel-${index}`,
     };
 };
 
-const CoinsTabs = ({ coins }) => {
+const CoinsTabs = (props) => {
+    const { coins } = props;
     const [value, setValue] = useState(0);
 
     const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -45,7 +46,7 @@ const CoinsTabs = ({ coins }) => {
     return (
         <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                <Tabs value={value} onChange={handleChange} aria-label="coins tab">
                     <Tab label="List" {...a11yProps(0)} />
                     <Tab label="My watchlist" {...a11yProps(1)} />
                 </Tabs>

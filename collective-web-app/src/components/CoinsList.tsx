@@ -1,43 +1,64 @@
 import PropTypes from 'prop-types';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import clsx from 'clsx';
+import { makeStyles } from '@mui/styles';
+import { formatNumber } from '../utils/formatNumber';
+import { DataGrid, GridRowsProp, GridColDef, GridCellParams } from '@mui/x-data-grid';
+import { CoinCapURIResponse } from 'src/types/currency';
+
+const columns: GridColDef[] = [
+    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'id', headerName: 'Id', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'rank', headerName: 'Rank', width: 200, align: 'center', headerAlign: 'center' },
+    { field: 'symbol', headerName: 'Symbol', width: 200, align: 'center', headerAlign: 'center' },
+    {
+        field: 'changePercent24Hr', headerName: 'Rate (last 24hrs)', width: 200, align: 'center', headerAlign: 'center', cellClassName: (params: GridCellParams<string>) =>
+            clsx('super-app', {
+                negative: params.value[0] !== '-',
+                positive: params.value[0] === '-',
+            }),
+    },
+    { field: 'priceUsd', headerName: 'Price', width: 200, align: 'center', headerAlign: 'center' },
+    { field: 'supply', headerName: 'Supply', width: 200, align: 'center', headerAlign: 'center', disableColumnMenu: true, sortable: false },
+];
+
+const useStyles = makeStyles({
+    root: {
+        '& .super-app.negative': {
+            color: 'rgba(157, 255, 118, 0.49)',
+
+            fontWeight: '600',
+        },
+        '& .super-app.positive': {
+            color: '#d47483',
+
+            fontWeight: '600',
+        },
+    },
+});
+
+const formatRows = (coins: CoinCapURIResponse[]): GridRowsProp => {
+    return coins.map(c => {
+        return {
+            "name": c.name,
+            "id": c.id,
+            "rank": Number(c.rank),
+            "symbol": c.symbol,
+            "changePercent24Hr": formatNumber(c.changePercent24Hr),
+            "priceUsd": '$' + Number(c.priceUsd).toFixed(2),
+            "supply": Number(c.supply).toFixed(2),
+        };
+    });
+};
 
 const CoinsList = ({ coins }) => {
+    const classes = useStyles();
+
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Rank</TableCell>
-                        <TableCell align="right">Name</TableCell>
-                        <TableCell align="right">Symbol</TableCell>
-                        <TableCell align="right">Change on the last 24hrs</TableCell>
-                        <TableCell align="right">Price</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {coins.map((row) => (
-                        <TableRow
-                            key={row.rank}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row.rank}
-                            </TableCell>
-                            <TableCell align="right">{row.name}</TableCell>
-                            <TableCell align="right">{row.symbol}</TableCell>
-                            <TableCell align="right" sx={{ color: row.changePercent24Hr[0] === '-' ? 'red' : 'green' }}>{row.changePercent24Hr}%</TableCell>
-                            <TableCell align="right">${Number(row.priceUsd).toFixed(2)}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <div style={{ display: 'flex', height: '100%' }} className={classes.root}>
+            <div style={{ flexGrow: 1 }}>
+                <DataGrid autoHeight rows={formatRows(coins)} columns={columns} />
+            </div>
+        </div>
     );
 };
 
