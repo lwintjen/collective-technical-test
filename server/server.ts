@@ -10,7 +10,7 @@ const cfg = initConfig();
 const cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://sharp-snyder-625092.netlify.app/');
+    res.setHeader('Access-Control-Allow-Origin', 'https://sharp-snyder-625092.netlify.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
