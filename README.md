@@ -64,6 +64,7 @@ Obviously, this is still a pretty simple application and there are tons of way t
 - an improved error handling on the server-side (when the server fails to query CoinCap API due to the API query limitation, it returns a 200 with an empty array, this could be improved)
 - in order to ship fast, I used material UI -> the design could definitely be improved
 - I would challenge the choice of using NodeJS and TS on the back-end for a more performant technology (such as GO) that can be more suitable to the use-case (built-in subroutines)
+- adding a staging env
 - ...
 
-Overall, I would say that this is a working product but it could still be improved in terms of features as well as code (reducing the lines of code per file for each component by splitting the styling from the logic into 2 separate files, switching from one tab to another is quite slow and could be improved, removing hardcoded arrays to map and re-structure the code a bit, naming).
+Overall, I would say that this is a working product but it could still be improved in terms of features as well as code (reducing the lines of code per file for each component by splitting the styling from the logic into 2 separate files, switching from one tab to another is laggy and could be improved, removing hardcoded arrays to map and re-structure the code a bit, naming, etc.).
