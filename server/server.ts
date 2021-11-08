@@ -3,10 +3,15 @@ import { initConfig } from "./config/config";
 import { startPolling, fetchTopRankedCrypto } from "./services/services";
 const NodeCache = require('node-cache');
 const app = express();
+const cors = require('cors');
 
 const cfg = initConfig();
 
 const cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
+
+app.use(cors({
+    origin: ['https://api.coincap.io/v2/']
+}));
 
 // fetch crypto-currencies every 10s
 setInterval(startPolling, 10000, cache, cfg);
