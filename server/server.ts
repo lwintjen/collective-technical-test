@@ -10,7 +10,7 @@ const cfg = initConfig();
 const cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 
 app.use(cors({
-    origin: ['https://api.coincap.io/v2/']
+    origin: ['https://api.coincap.io/v2/', 'https://sharp-snyder-625092.netlify.app/']
 }));
 
 // fetch crypto-currencies every 10s
